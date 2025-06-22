@@ -11,7 +11,6 @@ import Notes from './components/notes/Note'
 import NoteState from './context/notes/NoteState';
 import ThemeState from './context/theme/themeState';
 import AddNote from './components/notes/AddNote';
-import EditNote from './components/notes/EditNote';
 import { ToastContainer } from 'react-toastify';
 function App() {
   return (
@@ -29,7 +28,6 @@ function App() {
             <Route path='/contact' element={<Contact  />}></Route>
             <Route path='/note' element={<Notes/>}></Route>
             <Route path='/addnotes' element={<AddNote/>}></Route>
-            <Route path='/editnotes' element={<EditNote/>}></Route>
 
           </Routes>
           <ToastContainer position='top-right' autoClose={'3000'}/>

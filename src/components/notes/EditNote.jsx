@@ -1,107 +1,92 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { Save,ArrowLeft } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import React, { useState, useContext, useEffect } from 'react';
+import { X,Edit } from 'lucide-react';
+import noteContext from '../../context/notes/noteContext';
 import ThemeContext from '../../context/theme/themeContext';
-export default function EditNote({ noteToEdit }) {
+import { toast } from 'react-toastify';
+
+export default function EditNote({ isOpen, onClose, note }) {
   const { darkMode } = useContext(ThemeContext);
+  const { editNote } = useContext(noteContext);
+  const [updatedNote, setUpdatedNote] = useState({ title: '', description: '', tag: '' });
 
-  const [note, setNote] = useState({
-    title: '',
-    description: '',
-    tags: '',
-  });
-
-  // Pre-fill data when editing
   useEffect(() => {
-    if (noteToEdit) {
-      setNote({
-        title: noteToEdit.title,
-        description: noteToEdit.description,
-        tags: noteToEdit.tags.join(', ')
+    if (note) {
+      setUpdatedNote({
+        title: note.title,
+        description: note.description,
+        tag: note.tags.join(', ')
       });
     }
-  }, [noteToEdit]);
+  }, [note]);
 
   const handleChange = (e) => {
-    setNote({ ...note, [e.target.name]: e.target.value });
+    setUpdatedNote({ ...updatedNote, [e.target.name]: e.target.value });
   };
 
-  const handleUpdate = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const formattedTags = note.tags.split(',').map(tag => tag.trim()).filter(tag => tag !== '');
-    const updatedNote = {
-      ...noteToEdit,
-      ...note,
-      tags: formattedTags,
-      updatedAt: new Date().toISOString()
-    };
-    console.log("Updated Note:", updatedNote);
-    alert("Note Updated!");
+
+    if (!updatedNote.title || !updatedNote.description) {
+      return toast.error("All fields are required");
+    }
+if(updatedNote.description.length<5 || updatedNote.title.length<3){
+  return toast.error(" Title or description is too small")
+}
+    editNote(note.id, updatedNote);
+
+    toast.success("Note updated successfully");
+    onClose();
   };
+
+  if (!isOpen) return null;
 
   return (
-     <div className={`min-h-screen p-20 ${darkMode ? 'bg-black/70 text-white' : 'bg-gray-100 text-gray-900'}`}>
-      <div className={`${darkMode?'bg-black/80 text-white':'bg-white text-black'} max-w-xl mx-auto   p-6  shadow-2xl`}>
-        <h2 className="text-2xl font-bold mb-4 text-center">Edit Note</h2>
-        <form onSubmit={handleUpdate} className="space-y-4">
-          {/* Title */}
-          <div>
-            <label htmlFor="title" className="block text-sm font-medium mb-1">Title</label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              value={note.title}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-orange-500 "
-            />
-          </div>
-
-          {/* Description */}
-          <div>
+    <div className="min-h-screen p-10 md:p-20 fixed inset-0 bg-black/70 flex justify-center z-50 ">
+      <div className={`${darkMode ? 'bg-black/80 text-white' : 'bg-white text-black'} w-full max-w-2xl px-4 md:px-10 pt-5 shadow-2xl`}>
+        <button
+          className="absolute top-2 right-2 text-white hover:text-red-500"
+          onClick={onClose}
+        >
+          <X />
+        </button>
+        <h2 className="text-2xl font-bold mb-4 text-center text-orange-600">Edit Note</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <label htmlFor="title" className="block text-sm font-medium mb-1">Title</label>
+          <input
+            type="text"
+            name="title"
+            value={updatedNote.title}
+            onChange={handleChange}
+            placeholder="Title"
+            className="w-full px-4 py-2 border rounded-md outline-none focus:ring-2 focus:ring-orange-500"
+          />
             <label htmlFor="description" className="block text-sm font-medium mb-1">Description</label>
-            <textarea
-              id="description"
-              name="description"
-              value={note.description}
-              onChange={handleChange}
-              required
-              rows="4"
-              className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-orange-500 "
-            ></textarea>
-          </div>
 
-          {/* Tags */}
-          <div>
-            <label htmlFor="tags" className="block text-sm font-medium mb-1">Tags <span className="text-gray-500 text-xs">(comma separated)</span></label>
-            <input
-              type="text"
-              id="tags"
-              name="tags"
-              value={note.tags}
-              onChange={handleChange}
-              placeholder="e.g. personal, work"
-              className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-orange-500 "
-            />
-          </div>
+          <textarea
+            name="description"
+            value={updatedNote.description}
+            onChange={handleChange}
+            placeholder="Description"
+            className="w-full px-4 py-2 border rounded-md outline-none focus:ring-2 focus:ring-orange-500"
+          />
+            <label htmlFor="tag" className="block text-sm font-medium mb-1">Tags <span className="text-gray-500 text-xs">(comma separated)</span></label>
 
-          {/* Submit */}
+          <input
+            type="text"
+            name="tag"
+            value={updatedNote.tag}
+            onChange={handleChange}
+            placeholder="Tags (comma-separated)"
+            className="w-full px-4 py-2 border rounded-md outline-none focus:ring-2 focus:ring-orange-500"
+          />
           <button
             type="submit"
             className="flex items-center gap-2 justify-center bg-orange-600 hover:bg-orange-700 text-white font-semibold px-4 py-2 rounded-md w-full transition"
-          >
-            <Save size={18} /> Update Note
+          ><Edit/>
+            Update Note
           </button>
         </form>
       </div>
-       <Link to='/note'>
-      <button
-        className="fixed flex bottom-6 right-6 bg-orange-600 hover:bg-orange-700 text-white p-1 rounded shadow-lg transition"
-        aria-label="Edit Note"
-      >
-       <ArrowLeft/> Go Back
-      </button></Link>
     </div>
   );
 }

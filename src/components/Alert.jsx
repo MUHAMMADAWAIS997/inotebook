@@ -11,7 +11,7 @@ export default function Alert({ isOpen, onClose, onConfirm, message }) {
     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center px-4">
       <div
         className={`p-6 rounded-xl shadow-xl w-full max-w-md relative transition-all duration-200 ${
-          darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'
+          darkMode ? 'bg-black/80 text-white' : 'bg-white text-gray-900'
         }`}
       >
         {/* Close button */}
@@ -25,7 +25,7 @@ export default function Alert({ isOpen, onClose, onConfirm, message }) {
         </button>
 
         {/* Title */}
-        <h2 className="text-lg font-semibold mb-4">Confirm Deletion</h2>
+        <h2 className="text-lg font-semibold mb-4">Confirm Deleteion:</h2>
 
         {/* Message */}
         <p className={`text-sm mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>

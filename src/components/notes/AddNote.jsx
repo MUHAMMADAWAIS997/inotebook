@@ -22,6 +22,9 @@ export default function AddNote() {
     if (!note.description || !note.title) {
       return toast.error('All feilds are required')
     }
+    if(note.description.length<5||note.title.length<3){
+      return toast.error('Title or Description is too small')
+    }
     else {
       addNote(note)
       toast.success('Note added Successfully')

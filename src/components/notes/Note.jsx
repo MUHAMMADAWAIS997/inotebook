@@ -20,16 +20,26 @@ const {notes,getNotes}=useContext(noteContext)
   return (
     <div className={`p-2 min-h-screen ${darkMode ? 'bg-black/70 text-white' : 'bg-gray-100 text-gray-800'}`}>
       <h1 className="text-3xl font-bold mb-6 text-center">Your Notes</h1>
-
       <div className="flex flex-col gap-4">
-        {notes.map((note,idx) => (
-          <NoteItem key={note._id}
+     
+        {Array.isArray(notes) && notes.length > 0 ? (
+          
+      notes.map((note) => (
+        
+        <NoteItem
+          key={note._id}
           id={note._id}
-          title={note.title} description={note.description} 
+          title={note.title}
+          description={note.description}
           tags={separateTag(note.tag)}
           date={note.date}
-          />
-        ))}
+        />
+      ))
+    ) : (
+      <p className="text-center text-lg text-gray-500 dark:text-gray-400">
+        📝 You haven't created any notes yet.
+      </p>
+    )}
       </div>
 
       {/* Floating Add Button */}

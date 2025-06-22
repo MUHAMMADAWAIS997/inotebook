@@ -8,7 +8,7 @@ import Signup from './components/Signup';
 import About from './components/About';
 import Contact from './components/Contact';
 import Notes from './components/notes/Note'
-import NoteState from './context/notes/noteState';
+import NoteState from './context/notes/NoteState';
 import ThemeState from './context/theme/themeState';
 import AddNote from './components/notes/AddNote';
 import EditNote from './components/notes/EditNote';

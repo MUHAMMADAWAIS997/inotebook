@@ -10,8 +10,7 @@ export default function AddNote() {
   const [note, setNote] = useState({
     title: '',
     description: '',
-    tag: '',
-    date: new Date()
+    tag: ''
   });
 
   const handleChange = (e) => {

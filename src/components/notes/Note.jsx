@@ -1,11 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {Plus } from 'lucide-react';
 import ThemeContext from '../../context/theme/themeContext';
 import { Link } from 'react-router-dom';
 import noteContext from '../../context/notes/noteContext';
 import NoteItem from './NoteItem';
 export default function Notes() {
-const {notes}=useContext(noteContext)
+const {notes,getNotes}=useContext(noteContext)
+  useEffect(() => {
+    getNotes()
+  }, []);
 
 
   const { darkMode } = useContext(ThemeContext);

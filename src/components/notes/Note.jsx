@@ -1,14 +1,25 @@
 import React, { useContext, useEffect } from 'react';
 import {Plus } from 'lucide-react';
 import ThemeContext from '../../context/theme/themeContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import noteContext from '../../context/notes/noteContext';
 import NoteItem from './NoteItem';
+import AuthContext from '../../context/authentication/authContext';
+import { toast } from 'react-toastify';
 export default function Notes() {
+  const {token,isAuthenticated} = useContext(AuthContext);
 const {notes,getNotes}=useContext(noteContext)
+const navigate=useNavigate()
   useEffect(() => {
-    getNotes()
+    getNotes(token)
   }, []);
+  useEffect(() => {
+    if(!isAuthenticated){
+      navigate('/login')
+      toast.error("Login Required")
+
+    }
+  }, [isAuthenticated]);
 
 
   const { darkMode } = useContext(ThemeContext);

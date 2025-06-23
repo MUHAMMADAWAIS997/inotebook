@@ -6,13 +6,13 @@ const NoteState = (props) => {
 
   const path = 'http://localhost:3000/api/notes/'
   //fetch Alll NOtes
-  const getNotes = async () => {
+  const getNotes = async (token) => {
     try {
       const response = await fetch(`${path}getNotes`, {
         method: 'GET',
         headers: {
           'Content-type': 'application/json',
-          'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjg0ZTk0OGZkZjcyNmViZjg2NTc3NDQ4In0sImlhdCI6MTc0OTk4NDQyN30.BGHRUUex3NjAesjrcbvwHfhkqvDxAy86Dqy-Bzajyp0'
+          'auth-token': token
         }
       })
       const data=await response.json()
@@ -90,7 +90,8 @@ const NoteState = (props) => {
     const newNotes = notes.filter((note) => { return note._id !== id })
     setNotes(newNotes)
   }
-  return (<NoteContext.Provider value={{ notes, addNote, deleteNote, editNote,getNotes }}>
+  return (
+  <NoteContext.Provider value={{ notes, addNote, deleteNote, editNote,getNotes }}>
     {props.children}
   </NoteContext.Provider>
   )

@@ -2,7 +2,7 @@ import {useState} from 'react';
 import ThemeContext from './themeContext';
 
 export default function ThemeState(props) {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
 const toggleMode=()=>{
     setDarkMode(!darkMode)
 }

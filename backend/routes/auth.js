@@ -12,7 +12,7 @@ router.post(
   [
     body("name", "Enter Valid Name").isLength({ min: 3 }),
     body("email", "Enter Valid Email").isEmail(),
-    body("password", "Password Is too Short").isLength({ min: 6 }),
+    body("password", "Password Is too Short").isLength({ min: 8 }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -39,7 +39,7 @@ router.post(
         },
       };
       const token = jwt.sign(data, JWT_KEY);
-      res.status(201).json({ token });
+      res.status(200).json({ token });
     } catch (err) {
       res.status(500).json({ message: "Internal Server Error", err });
     }
@@ -73,7 +73,7 @@ router.post(
         },
       };
       const token = jwt.sign(data, JWT_KEY);
-      res.status(201).json({ token });
+      res.status(200).send({ token });
     } catch (err) {
       res.status(500).json({ message: "Internal Server Error", err });
     }

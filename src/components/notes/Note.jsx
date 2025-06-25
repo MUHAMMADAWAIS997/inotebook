@@ -16,7 +16,6 @@ const navigate=useNavigate()
   useEffect(() => {
     if(!isAuthenticated){
       navigate('/login')
-      toast.error("Login Required")
 
     }
   }, [isAuthenticated]);

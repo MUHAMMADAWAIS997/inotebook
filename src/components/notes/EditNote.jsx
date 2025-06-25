@@ -14,7 +14,6 @@ export default function EditNote({ isOpen, onClose, note }) {
   useEffect(() => {
     if (!isAuthenticated) {
       navigate('/login')
-      toast.error("Login Required")
 
     }
   }, [isAuthenticated]);

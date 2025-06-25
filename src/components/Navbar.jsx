@@ -9,13 +9,11 @@ export default function Navbar() {
   const { darkMode, toggleMode } = useContext(ThemeContext);
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const {logout}=useContext(AuthContext)
+  const {logout,isAuthenticated}=useContext(AuthContext)
   const toggleMenu = () => setIsOpen(!isOpen);
   const handleSearch = () => alert(`Searching for: ${searchTerm}`);
   const checkLogout = () => {
         logout()
-        document.getElementById('loginbtn').hidden=false
-        document.getElementById('logoutbtn').hidden=true
 
   }
 
@@ -76,14 +74,13 @@ export default function Navbar() {
 
             {/* Login */}
             <Link to="/login">
-              <button id='loginbtn'  className="flex items-center gap-1 mt-2 bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-700">
-                <LogIn size={18} /> Login
-              </button>
-              
-            </Link>
-            <button id='logoutbtn' hidden onClick={checkLogout} className="flex items-center gap-1 mt-2 bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-700">
+            {isAuthenticated?<button  onClick={checkLogout} className="flex items-center gap-1 mt-2 bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-700">
                 <LogIn size={18} /> Logout
-              </button>
+              </button>: <button className="flex items-center gap-1 mt-2 bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-700">
+                <LogIn size={18} /> Login
+              </button>}
+            </Link>
+            
           </div>
 
           {/* Mobile Menu Button */}
@@ -127,15 +124,13 @@ export default function Navbar() {
             <button onClick={toggleMode} className="hover:text-orange-500">
               {darkMode ? <Sun /> : <Moon />}
             </button>
-            <Link to="/login">
-              <button id='loginbtn' onClick={checkLogout} className="flex-row items-center gap-1 bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-700">
+           <Link to="/login">
+            {isAuthenticated?<button  onClick={checkLogout} className="flex items-center gap-1 mt-2 bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-700">
+                <LogIn size={18} /> Logout
+              </button>: <button className="flex items-center gap-1 mt-2 bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-700">
                 <LogIn size={18} /> Login
-              </button>
-              
+              </button>}
             </Link>
-             <button id='loginbtn' onClick={checkLogout} className="flex-row items-center gap-1 bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-700">
-                <LogIn size={18} /> Login
-              </button>
           </div>
         </div>
       )}

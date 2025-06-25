@@ -33,9 +33,6 @@ export default function Login() {
         login(json.token)
         toast.success('Logged in successfully')
         navigate('/notes')
-        document.getElementById('loginbtn').hidden=true
-        document.getElementById('logoutbtn').hidden=false
-
        
         
     } else {
@@ -49,7 +46,7 @@ export default function Login() {
   }
   return (
     <div className={`bg-[url("./assets/home.jpg")] bg-no-repeat bg-cover ${darkMode ? ' text-white' : ' text-gray-900'} pt-16 min-h-screen flex items-center justify-center px-4`}>
-      <div className={`${darkMode ? 'bg-black/80 text-white' : 'bg-white/80 text-gray-900'} p-8 rounded-2xl  w-full max-w-sm`}>
+      <div className={`${darkMode ? 'bg-black/80 text-white' : 'bg-white/80 text-gray-900'} p-8   w-full max-w-sm`}>
         <p className='flex justify-self-center text-orange-600 text-2xl font-bold'><Notebook size={30} /> iNoteBook</p>
         <h2 className="text-3xl font-bold mb-6 text-center text-orange-600">Login</h2>
         <form className="space-y-4" onSubmit={handleSubmit}>

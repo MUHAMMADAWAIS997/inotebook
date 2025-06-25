@@ -13,7 +13,6 @@ export default function AddNote() {
   useEffect(() => {
       if(!isAuthenticated){
         navigate('/login')
-        toast.error("Login Required")
   
       }
     }, [isAuthenticated]);

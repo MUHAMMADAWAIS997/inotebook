@@ -1,12 +1,22 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import { Plus, ArrowLeft } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import ThemeContext from '../../context/theme/themeContext';
 import noteContext from '../../context/notes/noteContext';
 import { toast } from 'react-toastify';
+import AuthContext from '../../context/authentication/authContext';
 export default function AddNote() {
   const { darkMode } = useContext(ThemeContext);
   const { addNote } = useContext(noteContext)
+  const {token,isAuthenticated}=useContext(AuthContext)
+  const navigate=useNavigate()
+  useEffect(() => {
+      if(!isAuthenticated){
+        navigate('/login')
+        toast.error("Login Required")
+  
+      }
+    }, [isAuthenticated]);
   const [note, setNote] = useState({
     title: '',
     description: '',
@@ -19,16 +29,11 @@ export default function AddNote() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!note.description || !note.title) {
-      return toast.error('All feilds are required')
-    }
-    if(note.description.length<5||note.title.length<3){
-      return toast.error('Title or Description is too small')
-    }
-    else {
-      addNote(note)
+   
+    
+      addNote(token,note)
       toast.success('Note added Successfully')
-    }
+ 
 
     setNote({ title: '', description: '', tag: '' });
   };
@@ -48,6 +53,7 @@ export default function AddNote() {
               value={note.title}
               onChange={handleChange}
               required
+              minLength={3}
               className="w-full px-4 py-2 border rounded-md outline-none focus:ring-2 focus:ring-orange-500 "
             />
           </div>
@@ -61,6 +67,7 @@ export default function AddNote() {
               value={note.description}
               onChange={handleChange}
               required
+              minLength={5}
               rows="4"
               className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-orange-500 outline-none"
             ></textarea>
@@ -89,7 +96,7 @@ export default function AddNote() {
           </button>
         </form>
       </div>
-      <Link to='/note'>
+      <Link to='/notes'>
         <button
           className="fixed flex bottom-6 right-6 bg-orange-600 hover:bg-orange-700 text-white p-1 rounded shadow-lg transition"
           aria-label="Add Note"

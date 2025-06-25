@@ -24,13 +24,13 @@ const NoteState = (props) => {
     }
   }
   // Add a note
-  const addNote = async (note) => {
+  const addNote = async (token,note) => {
     try {
       const response = await fetch(`${path}addNote`, {
         method: 'POST',
         headers: {
           'Content-type': 'application/json',
-          'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjg0ZTk0OGZkZjcyNmViZjg2NTc3NDQ4In0sImlhdCI6MTc0OTk4NDQyN30.BGHRUUex3NjAesjrcbvwHfhkqvDxAy86Dqy-Bzajyp0'
+          'auth-token': token
         },
         body: JSON.stringify(note)
       })
@@ -43,14 +43,14 @@ const NoteState = (props) => {
   }
 
   // Edit a note
-  const editNote = async (id,note) => {
+  const editNote = async (id,token,note) => {
     try {
       const response = await fetch(`${path}updateNote/${id}`, {
         method: 'PUT',
         headers: {
           'Content-type': 'application/json',
-          'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjg0ZTk0OGZkZjcyNmViZjg2NTc3NDQ4In0sImlhdCI6MTc0OTk4NDQyN30.BGHRUUex3NjAesjrcbvwHfhkqvDxAy86Dqy-Bzajyp0'
-        },
+          'auth-token': token
+         },
         body: JSON.stringify(note)
       })
       let newNotes=JSON.parse(JSON.stringify(notes))
@@ -72,14 +72,14 @@ const NoteState = (props) => {
   }
 
   // delete a note
-  const deleteNote = async (id) => {
+  const deleteNote = async (id,token) => {
     try {
       const response = await fetch(`${path}deleteNote/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-type': 'application/json',
-          'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjg0ZTk0OGZkZjcyNmViZjg2NTc3NDQ4In0sImlhdCI6MTc0OTk4NDQyN30.BGHRUUex3NjAesjrcbvwHfhkqvDxAy86Dqy-Bzajyp0'
-        },
+          'auth-token': token
+         },
        
       })
      

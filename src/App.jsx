@@ -27,7 +27,7 @@ function App() {
                 <Route path='/signup' element={<Signup />}></Route>
                 <Route path='/about' element={<About />}></Route>
                 <Route path='/contact' element={<Contact />}></Route>
-                <Route path='/note' element={<Notes />}></Route>
+                <Route path='/notes' element={<Notes />}></Route>
                 <Route path='/addnotes' element={<AddNote />}></Route>
               </Routes>
               <ToastContainer position='top-right' autoClose={'3000'} />

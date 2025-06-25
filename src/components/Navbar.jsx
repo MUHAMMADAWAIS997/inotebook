@@ -2,22 +2,28 @@ import React, { useContext, useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Moon, Sun, Search, LogIn,Notebook } from 'lucide-react';
 import ThemeContext from '../context/theme/themeContext';
+import AuthContext from '../context/authentication/authContext';
 
 export default function Navbar() {
   const location = useLocation();
   const { darkMode, toggleMode } = useContext(ThemeContext);
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-
+  const {logout}=useContext(AuthContext)
   const toggleMenu = () => setIsOpen(!isOpen);
   const handleSearch = () => alert(`Searching for: ${searchTerm}`);
-  const handleLogin = () => alert("Login clicked");
+  const checkLogout = () => {
+        logout()
+        document.getElementById('loginbtn').hidden=false
+        document.getElementById('logoutbtn').hidden=true
+
+  }
 
   const navItems = [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
     { name: "Contact Us", path: "/contact" },
-    { name: "Notes" , path:"/note"}
+    { name: "Notes" , path:"/notes"}
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -70,10 +76,14 @@ export default function Navbar() {
 
             {/* Login */}
             <Link to="/login">
-              <button className="flex items-center gap-1 mt-2 bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-700">
+              <button id='loginbtn'  className="flex items-center gap-1 mt-2 bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-700">
                 <LogIn size={18} /> Login
               </button>
+              
             </Link>
+            <button id='logoutbtn' hidden onClick={checkLogout} className="flex items-center gap-1 mt-2 bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-700">
+                <LogIn size={18} /> Logout
+              </button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -118,10 +128,14 @@ export default function Navbar() {
               {darkMode ? <Sun /> : <Moon />}
             </button>
             <Link to="/login">
-              <button className="flex items-center gap-1 bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-700">
+              <button id='loginbtn' onClick={checkLogout} className="flex-row items-center gap-1 bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-700">
                 <LogIn size={18} /> Login
               </button>
+              
             </Link>
+             <button id='loginbtn' onClick={checkLogout} className="flex-row items-center gap-1 bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-700">
+                <LogIn size={18} /> Login
+              </button>
           </div>
         </div>
       )}

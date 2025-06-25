@@ -3,9 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { User, Mail, Lock, UserPlus, Notebook,Eye,EyeOff } from 'lucide-react';
 import ThemeContext from '../context/theme/themeContext';
 import { toast } from 'react-toastify';
+import AuthContext from '../context/authentication/authContext';
 
 export default function Signup() {
   const navigate=useNavigate()
+  const {login}=useContext(AuthContext)
   const [data, setData] = useState({ name: '', email: '', password: '' });
   const [conPass,setConPass]=useState('')
    const [showPass, setShowPass] = useState(false);
@@ -17,13 +19,7 @@ export default function Signup() {
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
-     if(data.name.length<3){
-      return toast.error('Name is too short')
-    }
-    if(data.password.length<8){
-      return toast.error('Password must be 8 Characters long')
-    }
-    if(data.password!==conPass){
+     if(data.password!==conPass){
       return toast.error('Both Passwords should be same')
       
     }
@@ -39,10 +35,12 @@ export default function Signup() {
       })
       const json = await res.json()
       if (res.ok) {
-      localStorage.setItem('token', json.token);
+      login(json.token)
         toast.success('User created successfully')
         setData({name:'',email:'',password:''})
         navigate('/notes')
+        document.getElementById('loginbtn').hidden=true
+        document.getElementById('logoutbtn').hidden=false
       }
       else {
         toast.error(json.error)
@@ -66,7 +64,7 @@ export default function Signup() {
           <label htmlFor="name">Enter your Name:</label>
           <div className="flex items-center border rounded px-3 py-2">
             <User className="mr-2" />
-            <input type="text" id='name' name='name' value={data.name} onChange={handleChange} placeholder="Full Name" className="w-full bg-transparent focus:outline-none" />
+            <input type="text" id='name' minLength={3} name='name' value={data.name} onChange={handleChange} placeholder="Full Name" className="w-full bg-transparent focus:outline-none" />
           </div>
           <label htmlFor="email">Enter your Email:</label>
           <div className="flex items-center border rounded px-3 py-2">
@@ -76,13 +74,13 @@ export default function Signup() {
           <label htmlFor="pass">Enter Password:</label>
           <div className="flex items-center border rounded px-3 py-2">
             <Lock className="mr-2" />
-            <input type={showPass?"text":"password"} id='pass' name='password' value={data.password} onChange={handleChange} placeholder="Password" className="w-full bg-transparent focus:outline-none" />
+            <input type={showPass?"text":"password"} id='pass' minLength={8} name='password' value={data.password} onChange={handleChange} placeholder="Password" className="w-full bg-transparent focus:outline-none" />
             <span onClick={togglePass}>{showPass?<Eye/>:<EyeOff/>}</span>
           </div>
           <label htmlFor="conpass">Confirm Password:</label>
           <div className="flex items-center border rounded px-3 py-2">
             <Lock className="mr-2" />
-            <input type="text" id='conpass' name='confirmPassword' onChange={(e)=>{
+            <input type="text" id='conpass' minLength={8} name='confirmPassword' onChange={(e)=>{
       setConPass(e.target.value)
             }}  placeholder="Confirm Password" className="w-full bg-transparent focus:outline-none" />
           </div>

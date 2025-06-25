@@ -1,23 +1,32 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Edit, Trash2 } from 'lucide-react';
 import ThemeContext from '../../context/theme/themeContext';
+import { useNavigate } from 'react-router-dom';
 import Alert from '../Alert';
 import noteContext from '../../context/notes/noteContext';
 import { toast } from 'react-toastify';
 import EditNote from './EditNote.jsx';
+import AuthContext from '../../context/authentication/authContext.jsx';
 
 export default function NoteItem(props) {
   const { darkMode } = useContext(ThemeContext);
   const { deleteNote } = useContext(noteContext);
   const [alert, setAlert] = useState(false);
   const [edit, setEdit] = useState(false);
-
+  const { token, isAuthenticated } = useContext(AuthContext)
+  const navigate = useNavigate()
   const DeleteNote = (id) => {
-    deleteNote(id);
+    deleteNote(id, token);
     toast.success('Note deleted successfully');
     setAlert(false);
   };
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login')
+      toast.error("Login Required")
 
+    }
+  }, [isAuthenticated]);
   const { id, title, description, tags, date } = props;
 
   return (

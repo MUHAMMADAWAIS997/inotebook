@@ -32,7 +32,12 @@ export default function Login() {
       if (res.ok) {
         login(json.token)
         toast.success('Logged in successfully')
-        navigate('/note')
+        navigate('/notes')
+        document.getElementById('loginbtn').hidden=true
+        document.getElementById('logoutbtn').hidden=false
+
+       
+        
     } else {
       toast.error(json.error);
     }
@@ -55,6 +60,7 @@ export default function Login() {
               type="email"
               name='email'
               required
+              
               placeholder="Email"
               onChange={handleChange}
               value={data.email}
@@ -70,7 +76,8 @@ export default function Login() {
 
               type={showPass?"text":"password" }
               name='password'
-             required
+              required
+              minLength={8}
               placeholder="Password"
               onChange={handleChange}
                value={data.password}

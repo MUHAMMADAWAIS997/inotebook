@@ -26,7 +26,7 @@ router.post(
 
       const checkExistingUser = await User.findOne({ email });
       if (checkExistingUser) {
-        res.status(400).json({ message: "User Already Exist" });
+        res.status(400).json({ error: "User Already Exist" });
       }
       const user = await User.create({
         name: name,
@@ -41,7 +41,7 @@ router.post(
       const token = jwt.sign(data, JWT_KEY);
       res.status(200).json({ token });
     } catch (err) {
-      res.status(500).json({ message: "Internal Server Error", err });
+      res.status(500).json({ error: "Internal Server Error", err });
     }
   }
 );
